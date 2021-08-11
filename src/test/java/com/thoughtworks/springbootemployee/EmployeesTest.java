@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
@@ -62,6 +63,24 @@ class EmployeesTest {
         Employees actual = service.findByID(employee.getId());
         //then
         assertEquals(employee.getId(), actual.getId());
+    }
+
+    @Test
+    void should_return_5_employee_when_getByPage_given_employee_request() {
+        //given
+        List<Employees> employeesList = new ArrayList<>();
+        employeesList.add(new Employees(1, "Angelo", 23, "male", 1000, 1));
+        employeesList.add(new Employees(2, "Angela", 26, "female", 900, 1));
+        employeesList.add( new Employees(3, "Leo", 18, "male", 1000 , 1));
+        employeesList.add(new Employees(4, "Axie", 26, "female", 900, 1));
+        employeesList.add( new Employees(5, "Player", 18, "male", 1000 , 1));
+
+        when(repository.getByPage(1, 5)).thenReturn(employeesList);
+        EmployeeService employeeService = new EmployeeService(repository);
+        //when
+        List<Employees> employeeActual = employeeService.getByPage(1, 5);
+        //then
+        assertEquals(5, employeeActual.size());
     }
 
 }

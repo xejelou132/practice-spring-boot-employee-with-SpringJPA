@@ -28,4 +28,8 @@ public class EmployeeService {
     public Employees findByID(Integer employeeId) {
        return employeesRepo.getEmployeeById(employeeId);
     }
+
+    public List<Employees> getByPage(int index, int page) {
+        return  employeesRepo.getByPage(index , page);
+    }
 }
