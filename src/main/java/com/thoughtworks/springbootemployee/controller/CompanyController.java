@@ -40,7 +40,7 @@ public class CompanyController {
     public List<Company> getCompaniesByPagination(@RequestParam int page, @RequestParam int pageSize) {
 
 
-        return companyList.stream().skip((long) (page - 1) * pageSize)
+        return companyList.stream().skip((page - 1) * pageSize)
                 .limit(pageSize)
                 .collect(Collectors.toList());
     }
