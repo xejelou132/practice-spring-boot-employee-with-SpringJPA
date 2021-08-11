@@ -32,4 +32,8 @@ public class EmployeeService {
     public List<Employees> getByPage(int index, int page) {
         return  employeesRepo.getByPage(index , page);
     }
+
+    public List<Employees> findByGender(String gender) {
+        return employeesRepo.getGender(gender);
+    }
 }

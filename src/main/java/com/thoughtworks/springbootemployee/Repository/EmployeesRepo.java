@@ -33,4 +33,10 @@ public class EmployeesRepo {
                 .limit(page)
                 .collect(Collectors.toList());
     }
+
+    public List<Employees> getGender(String gender) {
+        return employees.stream()
+                .filter(employee -> employee.getGender().equals(gender))
+                .collect(Collectors.toList());
+    }
 }

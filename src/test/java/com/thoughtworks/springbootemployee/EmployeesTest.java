@@ -83,4 +83,23 @@ class EmployeesTest {
         assertEquals(5, employeeActual.size());
     }
 
+    @Test
+    void shoul_return_all_male_employees_when_gender_male_given_2_male() {
+        //given
+        String gender = "male";
+        Employees male1;
+        Employees male2;
+        male1 = new Employees(1, "Angelo", 23, "male", 1000, 1);
+        male2 = new Employees(2, "Angela", 26, "female", 900, 1);
+        EmployeeService service = new EmployeeService(repository);
+        when(repository.getGender(gender)).thenReturn(asList(male1,male2));
+
+        //when
+        List<Employees> actual = service.findByGender(gender);
+        //then
+        assertEquals(asList(male1, male2), actual);
+    }
+
+
+
 }
