@@ -52,4 +52,16 @@ class EmployeesTest {
         assertEquals(1, actual.getId());
     }
 
+    @Test
+    void should_get_employee_when_get_by_id_given_employee_id() {
+        //given
+        Employees employee = new Employees(1, "Leo", 18, "male", 1000 , 1);
+        when(repository.getEmployeeById(employee.getId())).thenReturn(employee);
+        EmployeeService service = new EmployeeService(repository);
+        //when
+        Employees actual = service.findByID(employee.getId());
+        //then
+        assertEquals(employee.getId(), actual.getId());
+    }
+
 }

@@ -23,4 +23,7 @@ public class EmployeesRepo {
     }
 
 
+    public Employees  getEmployeeById(Integer id) {
+        return null;
+    }
 }

@@ -24,4 +24,8 @@ public class EmployeeService {
     public Employees create(Employees employee) {
         return employeesRepo.add(employee);
     }
+
+    public Employees findByID(Integer id) {
+        return null;
+    }
 }
