@@ -36,4 +36,12 @@ public class EmployeeService {
     public List<Employees> findByGender(String gender) {
         return employeesRepo.getGender(gender);
     }
+
+    public Employees updateById(Integer employeeId, Employees employee) {
+        return employeesRepo.updateById(employeeId , employee);
+    }
+
+    public Employees deleteById(Integer employeeId) {
+        return employeesRepo.deleteById(employeeId);
+    }
 }

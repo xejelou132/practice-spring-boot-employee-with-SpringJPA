@@ -39,4 +39,26 @@ public class EmployeesRepo {
                 .filter(employee -> employee.getGender().equals(gender))
                 .collect(Collectors.toList());
     }
+
+    public Employees updateById(Integer employeeId, Employees updateEmployee) {
+          employees.stream().
+                filter(employees1 -> employees1.getId().equals(employeeId))
+                .findFirst()
+                .ifPresent(employees1 -> {
+                   employees.remove(employees1);
+                    updateEmployee.setId(employeeId);
+                    employees.add(updateEmployee);
+                });
+         return  updateEmployee;
+    }
+
+    public Employees deleteById(Integer employeeId) {
+
+        Employees employeesToRemove = employees.stream()
+                .filter(employees -> employees.getId().equals(employeeId))
+                .findFirst().get();
+        employees.remove(employeesToRemove);
+
+        return employeesToRemove;
+    }
 }
