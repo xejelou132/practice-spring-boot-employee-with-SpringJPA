@@ -3,7 +3,6 @@ package com.thoughtworks.springbootemployee.controller;
 import com.thoughtworks.springbootemployee.model.Employees;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,16 +13,16 @@ public class EmployeesController {
     private static List<Employees> employeesList = new ArrayList<>();
 
     static {
-        employeesList.add(new Employees(1,"Angelo", 23,"male",1000));
-        employeesList.add(new Employees(2,"Angela", 26,"female",900));
-        employeesList.add(new Employees(3,"Angelo2", 23,"male",1000));
-        employeesList.add(new Employees(4,"Angela2", 26,"female",900));
-        employeesList.add(new Employees(5,"Angelo3", 23,"male",1000));
-        employeesList.add(new Employees(6,"Angela3", 26,"female",900));
-        employeesList.add(new Employees(7,"Angela3", 26,"female",900));
-        employeesList.add(new Employees(8,"Angela3", 26,"female",900));
-        employeesList.add(new Employees(9,"Angela3", 26,"female",900));
-        employeesList.add(new Employees(10,"Angela3", 26,"female",900));
+        employeesList.add(new Employees(1, "Angelo", 23, "male", 1000));
+        employeesList.add(new Employees(2, "Angela", 26, "female", 900));
+        employeesList.add(new Employees(3, "Angelo2", 23, "male", 1000));
+        employeesList.add(new Employees(4, "Angela2", 26, "female", 900));
+        employeesList.add(new Employees(5, "Angelo3", 23, "male", 1000));
+        employeesList.add(new Employees(6, "Angela3", 26, "female", 900));
+        employeesList.add(new Employees(7, "Angela3", 26, "female", 900));
+        employeesList.add(new Employees(8, "Angela3", 26, "female", 900));
+        employeesList.add(new Employees(9, "Angela3", 26, "female", 900));
+        employeesList.add(new Employees(10, "Angela3", 26, "female", 900));
     }
 
     @GetMapping
@@ -46,16 +45,16 @@ public class EmployeesController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping(params = {"index" , "size"})
-    public List<Employees> getEmployeesByPagination(@RequestParam int index , @RequestParam int size ) {
+    @GetMapping(params = {"index", "size"})
+    public List<Employees> getEmployeesByPagination(@RequestParam int index, @RequestParam int size) {
         return employeesList.stream().skip((long) (index - 1) * size)
                 .limit(size)
                 .collect(Collectors.toList());
     }
 
     @PostMapping
-    public void addEmployee(@RequestBody Employees newEmployee){
-        Employees employeesToBeAdded = new Employees(employeesList.size()+1,
+    public void addEmployee(@RequestBody Employees newEmployee) {
+        Employees employeesToBeAdded = new Employees(employeesList.size() + 1,
                 newEmployee.getName(),
                 newEmployee.getAge(),
                 newEmployee.getGender(),
@@ -63,5 +62,24 @@ public class EmployeesController {
         employeesList.add(employeesToBeAdded);
 
     }
+
+    @PutMapping(path = "/{employeeId}")
+    public Employees updateEmployee(@PathVariable Integer employeeId, @RequestBody Employees employeesToBeUpdated) {
+        return employeesList.stream().filter(employees1 -> employees1.getId().equals(employeeId))
+                .map(employees1 -> updateEmployeesInfo(employees1, employeesToBeUpdated))
+                .findFirst().get();
+    }
+
+    private Employees updateEmployeesInfo(Employees employees1, Employees employeesToBeUpdated) {
+
+        if (employeesToBeUpdated != null) {
+            employees1.setGender(employeesToBeUpdated.getGender());
+            employees1.setAge(employeesToBeUpdated.getAge());
+            employees1.setName(employeesToBeUpdated.getName());
+            employees1.setSalary(employeesToBeUpdated.getSalary());
+        }
+        return employees1;
+    }
+
 
 }
