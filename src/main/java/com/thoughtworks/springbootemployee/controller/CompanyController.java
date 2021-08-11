@@ -2,10 +2,7 @@ package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employees;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +18,6 @@ public class CompanyController {
 
     static {
         employeesList.add(new Employees(10, "Angelo", 23, "male", 1000, 1));
-        employeesList.add(new Employees(11, "Ktiz", 23, "male", 100, 1));
         companyList.add(new Company(1, "alibaba" ,employeesList));
         companyList.add(new Company(2, "alibaba2" ,employeesList2));
     }
@@ -46,5 +42,56 @@ public class CompanyController {
                 .filter(company -> company.getCompanyId().equals(companieId))
                 .collect(Collectors.toList());
     }
+
+    @GetMapping(params = {"page", "pageSize"})
+    public List<Company> getCompaniesByPagination(@RequestParam int page, @RequestParam int pageSize) {
+        companyList.add(new Company(3, "alibaba" ,employeesList2));
+        companyList.add(new Company(4, "alibaba2" ,employeesList2));
+        companyList.add(new Company(5, "alibaba" ,employeesList2));
+        companyList.add(new Company(6, "alibaba2" ,employeesList2));
+
+        return companyList.stream().skip((long) (page - 1) * pageSize)
+                .limit(pageSize)
+                .collect(Collectors.toList());
+    }
+
+    @PostMapping
+    public void addCompany(@RequestBody Company newCompany) {
+        Company companyToBeAdded = new Company(companyList.size() + 1,
+                newCompany.getCompanyName(),
+                newCompany.getEmployeesList());
+        companyList.add(companyToBeAdded);
+
+    }
+
+    @PutMapping(path = "/{companyID}")
+    public Company updateCompany(@PathVariable Integer companyID, @RequestBody Company companyToBeUpdated) {
+        return companyList.stream().filter(company -> company.getCompanyNumber().equals(companyID))
+                .map(company -> updateCompanyInfo(company, companyToBeUpdated))
+                .findFirst().get();
+    }
+
+    private Company updateCompanyInfo(Company company, Company companyToBeUpdated) {
+
+        if (companyToBeUpdated.getCompanyName() != null) {
+            company.setCompanyName(companyToBeUpdated.getCompanyName());
+        }
+        if (companyToBeUpdated.getEmployeesList() != null) {
+            company.setEmployeesList(companyToBeUpdated.getEmployeesList());
+        }
+
+        return company;
+    }
+
+    @DeleteMapping(path = "/{companyId}")
+    public String deleteCompany(@PathVariable Integer companyId) {
+        Company companyToRemove = companyList.stream()
+                .filter(company -> company.getCompanyNumber().equals(companyId))
+                .findFirst().get();
+
+        companyList.remove(companyToRemove);
+        return "Deleted company" + companyId;
+    }
+
 
 }
