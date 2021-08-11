@@ -14,13 +14,6 @@ public class CompanyController {
 
     private static List<Company> companyList = new ArrayList<>();
     private static List<Employees> employeesList = new ArrayList<>();
-    private static List<Employees> employeesList2 = new ArrayList<>();
-
-    static {
-        employeesList.add(new Employees(10, "Angelo", 23, "male", 1000, 1));
-        companyList.add(new Company(1, "alibaba", employeesList));
-        companyList.add(new Company(2, "alibaba2", employeesList2));
-    }
 
 
     @GetMapping()
@@ -45,10 +38,7 @@ public class CompanyController {
 
     @GetMapping(params = {"page", "pageSize"})
     public List<Company> getCompaniesByPagination(@RequestParam int page, @RequestParam int pageSize) {
-        companyList.add(new Company(3, "alibaba", employeesList2));
-        companyList.add(new Company(4, "alibaba2", employeesList2));
-        companyList.add(new Company(5, "alibaba", employeesList2));
-        companyList.add(new Company(6, "alibaba2", employeesList2));
+
 
         return companyList.stream().skip((long) (page - 1) * pageSize)
                 .limit(pageSize)
@@ -76,6 +66,7 @@ public class CompanyController {
     }
 
     @DeleteMapping(path = "/{companyId}")
+
     public String deleteCompany(@PathVariable Integer companyId) {
         companyList.stream()
                 .filter(company -> company.getCompanyNumber().equals(companyId))
