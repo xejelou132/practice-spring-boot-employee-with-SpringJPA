@@ -28,8 +28,8 @@ class SpringBootEmployeeApplicationTests {
         //given
         List<Employees> employeesList = new ArrayList<>();
 
-        employeesList.add(new Employees(1, "Angelo", 23, "male", 1000));
-        employeesList.add(new Employees(2, "Angela", 26, "female", 900));
+        employeesList.add(new Employees(1, "Angelo", 23, "male", 1000, 1));
+        employeesList.add(new Employees(2, "Angela", 26, "female", 900, 1));
 
         //when
         given(employeesRepo.getAllEmployees()).willReturn(employeesList);

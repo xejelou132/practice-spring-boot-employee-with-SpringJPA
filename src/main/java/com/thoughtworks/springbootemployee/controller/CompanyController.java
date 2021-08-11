@@ -2,8 +2,6 @@ package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employees;
-import com.thoughtworks.springbootemployee.service.EmployeeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,11 +17,13 @@ public class CompanyController {
 
     private static List<Company> companyList = new ArrayList<>();
     private static List<Employees> employeesList = new ArrayList<>();
+    private static List<Employees> employeesList2 = new ArrayList<>();
 
     static {
-        employeesList.add(new Employees(10, "Angelo", 23, "male", 1000));
+        employeesList.add(new Employees(10, "Angelo", 23, "male", 1000, 1));
+        employeesList.add(new Employees(11, "Ktiz", 23, "male", 100, 1));
         companyList.add(new Company(1, "alibaba" ,employeesList));
-        companyList.add(new Company(2, "alibaba2" ,employeesList));
+        companyList.add(new Company(2, "alibaba2" ,employeesList2));
     }
 
 
@@ -39,4 +39,12 @@ public class CompanyController {
                 .findFirst()
                 .orElse(null);
     }
+
+    @GetMapping("/{companieId}/employees")
+    public List<Employees> getEmployeeByCompanyId(@PathVariable Integer companieId) {
+        return employeesList.stream()
+                .filter(company -> company.getCompanyId().equals(companieId))
+                .collect(Collectors.toList());
+    }
+
 }

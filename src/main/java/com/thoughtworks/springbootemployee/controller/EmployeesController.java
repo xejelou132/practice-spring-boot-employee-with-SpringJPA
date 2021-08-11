@@ -18,8 +18,8 @@ public class EmployeesController {
     private static List<Employees> employeesList = new ArrayList<>();
 
     public EmployeesController(EmployeeService employeeService) {
-        employeesList.add(new Employees(1, "Angelo", 23, "male", 1000));
-        employeesList.add(new Employees(2, "Angela", 26, "female", 900));
+        employeesList.add(new Employees(1, "Angelo", 23, "male", 1000, 1));
+        employeesList.add(new Employees(2, "Angela", 26, "female", 900, 1));
     }
 
 
@@ -57,7 +57,8 @@ public class EmployeesController {
                 newEmployee.getName(),
                 newEmployee.getAge(),
                 newEmployee.getGender(),
-                newEmployee.getSalary());
+                newEmployee.getSalary(),
+                newEmployee.getCompanyId());
         employeesList.add(employeesToBeAdded);
 
     }
