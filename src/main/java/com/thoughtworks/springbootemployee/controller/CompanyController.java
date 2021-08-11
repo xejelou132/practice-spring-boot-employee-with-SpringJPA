@@ -18,8 +18,8 @@ public class CompanyController {
 
     static {
         employeesList.add(new Employees(10, "Angelo", 23, "male", 1000, 1));
-        companyList.add(new Company(1, "alibaba" ,employeesList));
-        companyList.add(new Company(2, "alibaba2" ,employeesList2));
+        companyList.add(new Company(1, "alibaba", employeesList));
+        companyList.add(new Company(2, "alibaba2", employeesList2));
     }
 
 
@@ -45,10 +45,10 @@ public class CompanyController {
 
     @GetMapping(params = {"page", "pageSize"})
     public List<Company> getCompaniesByPagination(@RequestParam int page, @RequestParam int pageSize) {
-        companyList.add(new Company(3, "alibaba" ,employeesList2));
-        companyList.add(new Company(4, "alibaba2" ,employeesList2));
-        companyList.add(new Company(5, "alibaba" ,employeesList2));
-        companyList.add(new Company(6, "alibaba2" ,employeesList2));
+        companyList.add(new Company(3, "alibaba", employeesList2));
+        companyList.add(new Company(4, "alibaba2", employeesList2));
+        companyList.add(new Company(5, "alibaba", employeesList2));
+        companyList.add(new Company(6, "alibaba2", employeesList2));
 
         return companyList.stream().skip((long) (page - 1) * pageSize)
                 .limit(pageSize)
@@ -66,30 +66,23 @@ public class CompanyController {
 
     @PutMapping(path = "/{companyID}")
     public Company updateCompany(@PathVariable Integer companyID, @RequestBody Company companyToBeUpdated) {
-        return companyList.stream().filter(company -> company.getCompanyNumber().equals(companyID))
-                .map(company -> updateCompanyInfo(company, companyToBeUpdated))
-                .findFirst().get();
-    }
-
-    private Company updateCompanyInfo(Company company, Company companyToBeUpdated) {
-
-        if (companyToBeUpdated.getCompanyName() != null) {
-            company.setCompanyName(companyToBeUpdated.getCompanyName());
-        }
-        if (companyToBeUpdated.getEmployeesList() != null) {
-            company.setEmployeesList(companyToBeUpdated.getEmployeesList());
-        }
-
-        return company;
+        companyList.stream().filter(company -> company.getCompanyNumber().equals(companyID))
+                .findFirst().ifPresent(company -> {
+            companyList.remove(company);
+            companyToBeUpdated.setCompanyNumber(companyID);
+            companyList.add(companyToBeUpdated);
+        });
+        return companyToBeUpdated;
     }
 
     @DeleteMapping(path = "/{companyId}")
     public String deleteCompany(@PathVariable Integer companyId) {
-        Company companyToRemove = companyList.stream()
+        companyList.stream()
                 .filter(company -> company.getCompanyNumber().equals(companyId))
-                .findFirst().get();
-
-        companyList.remove(companyToRemove);
+                .findFirst()
+                .ifPresent(company -> {
+                    companyList.remove(company);
+                });
         return "Deleted company" + companyId;
     }
 

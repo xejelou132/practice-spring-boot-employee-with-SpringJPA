@@ -65,26 +65,16 @@ public class EmployeesController {
 
     @PutMapping(path = "/{employeeId}")
     public Employees updateEmployee(@PathVariable Integer employeeId, @RequestBody Employees employeesToBeUpdated) {
-        return employeesList.stream().filter(employees1 -> employees1.getId().equals(employeeId))
-                .map(employees1 -> updateEmployeesInfo(employees1, employeesToBeUpdated))
-                .findFirst().get();
-    }
+        employeesList.stream().
+                filter(employees1 -> employees1.getId().equals(employeeId))
+                .findFirst()
+                .ifPresent(employees -> {
+                    employeesList.remove(employees);
+                    employeesToBeUpdated.setId(employeeId);
+                    employeesList.add(employeesToBeUpdated);
+                });
 
-    private Employees updateEmployeesInfo(Employees employees1, Employees employeesToBeUpdated) {
-
-        if (employeesToBeUpdated.getGender() != null) {
-            employees1.setGender(employeesToBeUpdated.getGender());
-        }
-        if (employeesToBeUpdated.getAge() != null) {
-            employees1.setAge(employeesToBeUpdated.getAge());
-        }
-        if (employeesToBeUpdated.getName() != null) {
-            employees1.setName(employeesToBeUpdated.getName());
-        }
-        if (employeesToBeUpdated.getSalary() != null) {
-            employees1.setSalary(employeesToBeUpdated.getSalary());
-        }
-        return employees1;
+        return employeesToBeUpdated;
     }
 
     @DeleteMapping(path = "/{employeeId}")
