@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.Repository.EmployeesRepo;
 import com.thoughtworks.springbootemployee.model.Employees;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,19 +14,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/employees")
 public class EmployeesController {
 
-    @Autowired
-    private EmployeeService employeeService;
-    private static List<Employees> employeesList = new ArrayList<>();
-
-    public EmployeesController(EmployeeService employeeService) {
-        employeesList.add(new Employees(1, "Angelo", 23, "male", 1000, 1));
-        employeesList.add(new Employees(2, "Angela", 26, "female", 900, 1));
-    }
-
+    private final List<Employees> employeesList = new ArrayList<>();
+    private EmployeeService employeeService = new EmployeeService(new EmployeesRepo());
 
     @GetMapping()
     public List<Employees> getAllEmployees() {
-        return employeeService.getEmployeesList();
+        return employeesList;
     }
 
 
@@ -52,16 +46,11 @@ public class EmployeesController {
     }
 
     @PostMapping
-    public void addEmployee(@RequestBody Employees newEmployee) {
-        Employees employeesToBeAdded = new Employees(employeesList.size() + 1,
-                newEmployee.getName(),
-                newEmployee.getAge(),
-                newEmployee.getGender(),
-                newEmployee.getSalary(),
-                newEmployee.getCompanyId());
-        employeesList.add(employeesToBeAdded);
-
+    public Employees addEmployee(@RequestBody Employees employee) {
+        employeesList.add(employee);
+        return employee;
     }
+
 
     @PutMapping(path = "/{employeeId}")
     public Employees updateEmployee(@PathVariable Integer employeeId, @RequestBody Employees employeesToBeUpdated) {

@@ -12,11 +12,6 @@ public class EmployeesRepo {
 
     private List<Employees> employees = new ArrayList<>();
 
-    public EmployeesRepo() {
-        employees.add(new Employees(1, "Angelo", 23, "male", 1000, 1));
-        employees.add(new Employees(2, "Angela", 26, "female", 900, 1));
-    }
-
     public List<Employees> getAllEmployees() {
         return employees;
     }
@@ -26,5 +21,6 @@ public class EmployeesRepo {
         employees.add(employee);
         return employee;
     }
+
 
 }

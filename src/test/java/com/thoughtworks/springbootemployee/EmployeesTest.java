@@ -45,7 +45,7 @@ class EmployeesTest {
         //given
         Employees employee = new Employees(1, "Leo", 18, "male", 1000 , 1);
         EmployeeService service = new EmployeeService(repository);
-        when(repository.save(employee)).thenReturn(employee);
+        when(repository.add(employee)).thenReturn(employee);
         //when
         Employees actual = service.create(employee);
         //then
