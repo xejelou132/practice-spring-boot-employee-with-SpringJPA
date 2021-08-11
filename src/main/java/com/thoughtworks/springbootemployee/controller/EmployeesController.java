@@ -29,7 +29,6 @@ public class EmployeesController {
     }
 
 
-
     @GetMapping("/{employeeId}")
     public Employees getEmployeeById(@PathVariable Integer employeeId) {
         return employeesList.stream()
@@ -72,12 +71,27 @@ public class EmployeesController {
 
     private Employees updateEmployeesInfo(Employees employees1, Employees employeesToBeUpdated) {
 
-        if (employeesToBeUpdated != null) {
+        if (employeesToBeUpdated.getGender() != null) {
             employees1.setGender(employeesToBeUpdated.getGender());
+        }
+        if (employeesToBeUpdated.getAge() != null) {
             employees1.setAge(employeesToBeUpdated.getAge());
+        }
+        if (employeesToBeUpdated.getName() != null) {
             employees1.setName(employeesToBeUpdated.getName());
+        }
+        if (employeesToBeUpdated.getSalary() != null) {
             employees1.setSalary(employeesToBeUpdated.getSalary());
         }
         return employees1;
+    }
+
+    @DeleteMapping(path = "/{employeeId}")
+    public void deleteEmployee(@PathVariable Integer employeeId) {
+        Employees employeesToRemove = employeesList.stream()
+                .filter(employees -> employees.getId().equals(employeeId))
+                .findFirst().get();
+
+        employeesList.remove(employeesToRemove);
     }
 }
