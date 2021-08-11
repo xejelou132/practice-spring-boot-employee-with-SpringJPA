@@ -22,7 +22,6 @@ public class EmployeesController {
         return employeesList;
     }
 
-
     @GetMapping("/{employeeId}")
     public Employees getEmployeeById(@PathVariable Integer employeeId) {
         return employeesList.stream()
@@ -47,6 +46,7 @@ public class EmployeesController {
 
     @PostMapping
     public Employees addEmployee(@RequestBody Employees employee) {
+        employee.setId(employeesList.size() + 1);
         employeesList.add(employee);
         return employee;
     }

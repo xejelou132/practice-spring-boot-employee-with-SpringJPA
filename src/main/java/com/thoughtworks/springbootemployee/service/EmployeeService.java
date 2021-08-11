@@ -25,7 +25,7 @@ public class EmployeeService {
         return employeesRepo.add(employee);
     }
 
-    public Employees findByID(Integer id) {
-        return null;
+    public Employees findByID(Integer employeeId) {
+       return employeesRepo.getEmployeeById(employeeId);
     }
 }

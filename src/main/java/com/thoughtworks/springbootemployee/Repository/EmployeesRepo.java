@@ -16,14 +16,14 @@ public class EmployeesRepo {
         return employees;
     }
 
-
     public Employees add(Employees employee){
         employees.add(employee);
         return employee;
     }
 
-
-    public Employees  getEmployeeById(Integer id) {
-        return null;
+    public Employees  getEmployeeById(Integer employeeId) {
+        return employees.stream().
+                filter(employee -> employee.getId().equals(employeeId))
+                .findFirst().orElse(null);
     }
 }
