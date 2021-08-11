@@ -52,13 +52,12 @@ public class EmployeesRepo {
          return  updateEmployee;
     }
 
-    public Employees deleteById(Integer employeeId) {
-
-        Employees employeesToRemove = employees.stream()
+    public String deleteById(Integer employeeId) {
+           employees.stream()
                 .filter(employees -> employees.getId().equals(employeeId))
-                .findFirst().get();
-        employees.remove(employeesToRemove);
+                .findFirst()
+                .ifPresent(employees::remove);
 
-        return employeesToRemove;
+        return  "Deleted Employee " + employeeId;
     }
 }

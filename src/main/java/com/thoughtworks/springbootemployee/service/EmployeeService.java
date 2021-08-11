@@ -41,7 +41,7 @@ public class EmployeeService {
         return employeesRepo.updateById(employeeId , employee);
     }
 
-    public Employees deleteById(Integer employeeId) {
+    public String deleteById(Integer employeeId) {
         return employeesRepo.deleteById(employeeId);
     }
 }
