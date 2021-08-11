@@ -22,4 +22,9 @@ public class EmployeesRepo {
     }
 
 
+    public Employees add(Employees employee){
+        employees.add(employee);
+        return employee;
+    }
+
 }

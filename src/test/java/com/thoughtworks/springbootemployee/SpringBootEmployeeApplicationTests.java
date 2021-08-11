@@ -33,7 +33,7 @@ class SpringBootEmployeeApplicationTests {
 
         //when
         given(employeesRepo.getAllEmployees()).willReturn(employeesList);
-        List<Employees> actualEmployess = employeeService.geteEmployeesList();
+        List<Employees> actualEmployess = employeeService.getEmployeesList();
 
         assertEquals(employeesList.size(), actualEmployess.size());
         assertEquals(employeesList, actualEmployess);

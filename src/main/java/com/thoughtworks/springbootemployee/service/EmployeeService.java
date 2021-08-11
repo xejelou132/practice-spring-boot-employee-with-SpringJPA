@@ -4,18 +4,20 @@ import com.thoughtworks.springbootemployee.Repository.EmployeesRepo;
 import com.thoughtworks.springbootemployee.model.Employees;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 public class EmployeeService {
 
+    @Resource
     private EmployeesRepo employeesRepo;
 
     public EmployeeService(EmployeesRepo employeesRepo) {
         this.employeesRepo = employeesRepo;
     }
 
-    public List<Employees> geteEmployeesList(){
+    public List<Employees> getEmployeesList(){
         return employeesRepo.getAllEmployees();
     }
 }
