@@ -4,6 +4,7 @@ import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -19,9 +20,13 @@ public class CompanyController {
     @Autowired
     private CompanyService companyService;
 
+    public CompanyController(CompanyService companyService) {
+        this.companyService = companyService;
+    }
+
     @GetMapping()
     public List<Company> getAllCompany() {
-        return companyList;
+        return companyService.getCompanyList();
     }
 
     @GetMapping("/{companieId}")
@@ -39,9 +44,9 @@ public class CompanyController {
         return companyService.getByPage(page, pageSize);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public void addCompany(@RequestBody Company newCompany) {
-        newCompany.setId(companyList.size() + 1);
         companyService.add(newCompany);
 
     }

@@ -36,18 +36,14 @@ public class CompanyService {
 
 
     public Company updateById(Integer id, Company company) {
-        companyRepo.findAll()
-                .stream()
-                .filter(company1 -> company1.getId().equals(id))
-                .findFirst()
-                .ifPresent(company1 -> {
-                    companyRepo.deleteById(id);
-                    companyRepo.save(company);
-                });
-        return company;
+        Company editedCompany = this.findById(id);
+        if(company != null){
+            editedCompany.setId(id);
+            editedCompany.setCompanyName(company.getCompanyName());
+            return companyRepo.save(editedCompany);
+        }
+        return editedCompany;
     }
-
-
 
     public void deleteById(Integer id) {
         companyRepo.deleteById(id);
