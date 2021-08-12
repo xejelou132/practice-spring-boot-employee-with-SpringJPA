@@ -40,6 +40,7 @@ public class CompanyService {
         if(company != null){
             editedCompany.setId(id);
             editedCompany.setCompanyName(company.getCompanyName());
+            companyRepo.delete(company);
             return companyRepo.save(editedCompany);
         }
         return editedCompany;
