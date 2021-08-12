@@ -1,8 +1,7 @@
 package com.thoughtworks.springbootemployee.controller;
 
-import com.thoughtworks.springbootemployee.Repository.RetiringCompanyRepo;
 import com.thoughtworks.springbootemployee.model.Company;
-import com.thoughtworks.springbootemployee.model.Employees;
+import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,7 @@ import java.util.List;
 public class CompanyController {
 
     private static List<Company> companyList = new ArrayList<>();
-    private static List<Employees> employeesList = new ArrayList<>();
+    private static List<Employee> employeeList = new ArrayList<>();
 
     @Autowired
     private CompanyService companyService;
@@ -31,7 +30,7 @@ public class CompanyController {
     }
 
     @GetMapping("/{companieId}/employees")
-    public List<Employees> getEmployeeByCompanyId(@PathVariable Integer companieId) {
+    public List<Employee> getEmployeeByCompanyId(@PathVariable Integer companieId) {
         return companyService.getEmployeesByCompanyId(companieId);
     }
 
@@ -42,7 +41,7 @@ public class CompanyController {
 
     @PostMapping
     public void addCompany(@RequestBody Company newCompany) {
-        newCompany.setCompanyNumber(companyList.size() + 1);
+        newCompany.setId(companyList.size() + 1);
         companyService.add(newCompany);
 
     }

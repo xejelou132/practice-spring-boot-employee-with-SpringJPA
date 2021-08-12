@@ -1,25 +1,16 @@
 package com.thoughtworks.springbootemployee;
 
 import com.thoughtworks.springbootemployee.Repository.RetiringCompanyRepo;
-import com.thoughtworks.springbootemployee.Repository.RetiringEmployeesRepo;
 import com.thoughtworks.springbootemployee.model.Company;
-import com.thoughtworks.springbootemployee.model.Employees;
-import com.thoughtworks.springbootemployee.service.CompanyService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import com.thoughtworks.springbootemployee.model.Employee;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-import static java.util.Arrays.asList;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 public class CompanyTest {
     RetiringCompanyRepo repository = Mockito.mock(RetiringCompanyRepo.class);
-    List<Employees> employeesList = new ArrayList<>();
+    List<Employee> employeeList = new ArrayList<>();
     List<Company> companyList = new ArrayList<>();
 
 //    @BeforeEach

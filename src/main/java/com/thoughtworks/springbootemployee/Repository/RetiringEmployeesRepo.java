@@ -1,6 +1,6 @@
 package com.thoughtworks.springbootemployee.Repository;
 
-import com.thoughtworks.springbootemployee.model.Employees;
+import com.thoughtworks.springbootemployee.model.Employee;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -11,36 +11,36 @@ import java.util.stream.Collectors;
 @Repository
 public class RetiringEmployeesRepo {
 
-    private List<Employees> employees = new ArrayList<>();
+    private List<Employee> employees = new ArrayList<>();
 
-    public List<Employees> getAllEmployees() {
+    public List<Employee> getAllEmployees() {
         return employees;
     }
 
-    public Employees add(Employees employee){
+    public Employee add(Employee employee){
         employees.add(employee);
         return employee;
     }
 
-    public Employees  getEmployeeById(Integer employeeId) {
+    public Employee getEmployeeById(Integer employeeId) {
         return employees.stream().
                 filter(employee -> employee.getId().equals(employeeId))
                 .findFirst().orElse(null);
     }
 
-    public List<Employees> getByPage(int index, int page) {
+    public List<Employee> getByPage(int index, int page) {
         return employees.stream().skip((long) (index - 1) * page)
                 .limit(page)
                 .collect(Collectors.toList());
     }
 
-    public List<Employees> getGender(String gender) {
+    public List<Employee> getGender(String gender) {
         return employees.stream()
                 .filter(employee -> employee.getGender().equals(gender))
                 .collect(Collectors.toList());
     }
 
-    public Employees updateById(Integer employeeId, Employees updateEmployee) {
+    public Employee updateById(Integer employeeId, Employee updateEmployee) {
           employees.stream().
                 filter(employees1 -> employees1.getId().equals(employeeId))
                 .findFirst()

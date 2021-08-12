@@ -8,34 +8,34 @@ public class Company {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer companyNumber;
+    private Integer id;
     private String companyName;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "companyId")
-    private List<Employees> employeesList;
+    private List<Employee> employeeList;
 
-    public Company(Integer companyNumber, String companyName, List<Employees> employeesList) {
-        this.companyNumber = companyNumber;
+    public Company(Integer id, String companyName, List<Employee> employeeList) {
+        this.id = id;
         this.companyName = companyName;
-        this.employeesList = employeesList;
+        this.employeeList = employeeList;
     }
 
-    public Integer getCompanyNumber() {
-        return companyNumber;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCompanyNumber(Integer companyNumber) {
-        this.companyNumber = companyNumber;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getCompanyName() {
         return companyName;
     }
 
-    public List<Employees> getEmployeesList() {
-        return employeesList;
+    public List<Employee> getEmployeesList() {
+        return employeeList;
     }
 
-    public void setEmployeesList(List<Employees> employeesList) {
-        this.employeesList = employeesList;
+    public void setEmployeesList(List<Employee> employeeList) {
+        this.employeeList = employeeList;
     }
 }

@@ -3,9 +3,8 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.Repository.CompanyRepo;
 //import com.thoughtworks.springbootemployee.Repository.RetiringCompanyRepo;
 import com.thoughtworks.springbootemployee.model.Company;
-import com.thoughtworks.springbootemployee.model.Employees;
+import com.thoughtworks.springbootemployee.model.Employee;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public class CompanyService {
     public Company findById(Integer id) {
         return companyRepo.findAll()
                 .stream()
-                .filter(company -> company.getCompanyNumber().equals(id))
+                .filter(company -> company.getId().equals(id))
                 .findFirst()
                 .orElse(null);
     }
@@ -39,7 +38,7 @@ public class CompanyService {
     public Company updateById(Integer id, Company company) {
         companyRepo.findAll()
                 .stream()
-                .filter(company1 -> company1.getCompanyNumber().equals(id))
+                .filter(company1 -> company1.getId().equals(id))
                 .findFirst()
                 .ifPresent(company1 -> {
                     companyRepo.deleteById(id);
@@ -54,7 +53,7 @@ public class CompanyService {
         companyRepo.deleteById(id);
     }
 
-    public List<Employees> getEmployeesByCompanyId(int companyId) {
+    public List<Employee> getEmployeesByCompanyId(int companyId) {
         return companyRepo.findById(companyId).get().getEmployeesList();
     }
 

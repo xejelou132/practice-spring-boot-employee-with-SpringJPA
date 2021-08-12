@@ -1,22 +1,15 @@
 package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.Repository.EmployeesRepo;
-import com.thoughtworks.springbootemployee.Repository.RetiringEmployeesRepo;
-import com.thoughtworks.springbootemployee.model.Employees;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import com.thoughtworks.springbootemployee.model.Employee;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService{
-    private Employees employees;
 
     @Resource
     private EmployeesRepo employeesRepo;
@@ -25,24 +18,20 @@ public class EmployeeService{
         this.employeesRepo = employeesRepo;
     }
 
-    public Employees addEmployee(Employees employee){
+    public Employee addEmployee(Employee employee){
         return employeesRepo.save(employee);
     }
 
-    public List<Employees> getEmployeesList(){
+    public List<Employee> getEmployeesList(){
         return employeesRepo.findAll();
     }
 
 
-    public Employees findByID(Integer employeeId) {
-       return employeesRepo.findAll()
-               .stream()
-               .filter(employees1 -> employees1.getId().equals(employeeId))
-               .findFirst()
-               .orElse(null);
+    public Employee findByID(Integer employeeId) {
+       return employeesRepo.findById(employeeId).orElseThrow(null);
     }
 
-    public List<Employees> getByPage(int index, int page) {
+    public List<Employee> getByPage(int index, int page) {
         return  employeesRepo.findAll()
                 .stream()
                 .skip((long) (index - 1) *page)
@@ -50,26 +39,26 @@ public class EmployeeService{
                 .collect(Collectors.toList());
     }
 
-    public List<Employees> findByGender(String gender) {
+    public List<Employee> findByGender(String gender) {
         return employeesRepo.findAll()
                 .stream()
                 .filter(employees1 -> employees1.getGender().equals(gender))
                 .collect(Collectors.toList());
     }
 
-    public Employees updateById(Integer employeeId, Employees employee) {
-        employeesRepo.findAll()
-                .stream()
-                .filter(employee1 -> employee1.getId().equals(employeeId))
-                .findFirst()
-                .ifPresent(employees1 -> {
-                    employeesRepo.deleteById(employeeId);
-                    employeesRepo.save(employee);
-
-                })
-                ;
-       return employee;
-
+    public Employee updateById(Integer employeeId, Employee employee) {
+       Employee editedEmployee = this.findByID(employeeId);
+       if(employee != null){
+           editedEmployee.setAge(employee.getAge());
+           editedEmployee.setId(employeeId);
+           editedEmployee.setCompanyId(employee.getCompanyId());
+           editedEmployee.setName(employee.getName());
+           editedEmployee.setSalary(employee.getSalary());
+           editedEmployee.setGender(employee.getGender());
+           employeesRepo.delete(employee);
+           return employeesRepo.save(editedEmployee);
+       }
+         return editedEmployee;
     }
 
     public void deleteById(Integer employeeId) {
