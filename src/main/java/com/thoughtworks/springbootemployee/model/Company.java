@@ -1,10 +1,16 @@
 package com.thoughtworks.springbootemployee.model;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
 public class Company {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer companyNumber;
     private String companyName;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "companyId")
     private List<Employees> employeesList;
 
     public Company(Integer companyNumber, String companyName, List<Employees> employeesList) {

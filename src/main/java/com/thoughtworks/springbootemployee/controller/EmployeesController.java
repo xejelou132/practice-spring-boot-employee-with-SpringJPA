@@ -3,6 +3,7 @@ package com.thoughtworks.springbootemployee.controller;
 import com.thoughtworks.springbootemployee.Repository.EmployeesRepo;
 import com.thoughtworks.springbootemployee.model.Employees;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -11,9 +12,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/employees")
 public class EmployeesController {
-
+    @Autowired
+    private EmployeeService employeeService;
     private final List<Employees> employeesList = new ArrayList<>();
-    private EmployeeService employeeService = new EmployeeService(new EmployeesRepo());
 
     @GetMapping()
     public List<Employees> getAllEmployees() {
@@ -38,7 +39,7 @@ public class EmployeesController {
     @PostMapping
     public Employees addEmployee(@RequestBody Employees employee) {
         employee.setId(employeesList.size() + 1);
-        return employeeService.create(employee);
+        return employeeService.addEmployee(employee);
     }
 
 

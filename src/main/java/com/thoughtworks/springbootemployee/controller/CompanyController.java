@@ -1,9 +1,10 @@
 package com.thoughtworks.springbootemployee.controller;
 
-import com.thoughtworks.springbootemployee.Repository.CompanyRepo;
+import com.thoughtworks.springbootemployee.Repository.RetiringCompanyRepo;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employees;
 import com.thoughtworks.springbootemployee.service.CompanyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -16,7 +17,8 @@ public class CompanyController {
     private static List<Company> companyList = new ArrayList<>();
     private static List<Employees> employeesList = new ArrayList<>();
 
-    private CompanyService companyService = new CompanyService(new CompanyRepo());
+    @Autowired
+    private CompanyService companyService;
 
     @GetMapping()
     public List<Company> getAllCompany() {

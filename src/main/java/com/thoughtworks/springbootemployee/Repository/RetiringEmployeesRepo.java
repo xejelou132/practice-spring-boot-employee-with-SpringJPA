@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 
 @Repository
-public class EmployeesRepo {
+public class RetiringEmployeesRepo {
 
     private List<Employees> employees = new ArrayList<>();
 
