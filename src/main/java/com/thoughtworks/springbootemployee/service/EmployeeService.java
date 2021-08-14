@@ -41,7 +41,8 @@ public class EmployeeService{
     }
 
     public EmployeeResponse findByID(Integer employeeId) {
-        return employeesRepo.findAll().stream()
+        return employeesRepo.findAll()
+                .stream()
                 .filter(employee -> employee.getId().equals(employeeId))
                 .map(employeesMapper::toResponse)
                 .findFirst()

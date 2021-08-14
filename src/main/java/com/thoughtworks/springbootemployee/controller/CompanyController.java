@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.dto.CompanyResponse;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.CompanyService;
@@ -30,7 +31,7 @@ public class CompanyController {
     }
 
     @GetMapping("/{companieId}")
-    public Company getCompanyById(@PathVariable Integer companieId) {
+    public CompanyResponse getCompanyById(@PathVariable Integer companieId) {
         return companyService.findById(companieId);
     }
 
@@ -52,7 +53,7 @@ public class CompanyController {
     }
 
     @PutMapping(path = "/{companyID}")
-    public Company updateCompany(@PathVariable Integer companyID, @RequestBody Company companyToBeUpdated) {
+    public Company updateCompany(@PathVariable Integer companyID, @RequestBody Company companyToBeUpdated) throws Exception{
         return companyService.updateById(companyID, companyToBeUpdated);
     }
 
