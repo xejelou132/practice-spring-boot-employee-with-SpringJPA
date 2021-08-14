@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.integration;
 
 import com.thoughtworks.springbootemployee.Repository.EmployeesRepo;
 import com.thoughtworks.springbootemployee.model.Employee;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,16 @@ public class EmployeeIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @AfterEach
+    void deleteDatainDb(){
+        employeeRepository.deleteAll();
+    }
+
 
     @Test
     void should_return_list_of_employees_when_get_all_employees_given_get_request() throws Exception {
         //given
-        Employee employee = new Employee(1, "joseph", 22, "male", 1000000 , 1);
+        Employee employee = new Employee(1, "joseph", 22, "male", 1000000);
         employeeRepository.save(employee);
 
         //when
@@ -67,13 +73,13 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$.salary").value(1000000));
 
         List<Employee> employees = employeeRepository.findAll();
-        Assertions.assertEquals(4, employees.size());
+        Assertions.assertEquals(1, employees.size());
     }
 
     @Test
     void should_return_employee_when_get_specific_employee_given_get_employee_request() throws Exception {
         //given
-        Employee employee = employeeRepository.save(new Employee(1, "joseph", 22, "male", 1000000 , 1));
+        Employee employee = employeeRepository.save(new Employee(1, "joseph", 22, "male", 1000000));
 
         //when
         //then
@@ -89,7 +95,7 @@ public class EmployeeIntegrationTest {
     @Test
     void should_update_employee_when_put_specific_employee_given_put_employee_request_and_details() throws Exception {
         //given
-        Employee employee = employeeRepository.save(new Employee(1, "joseph", 22, "male", 1000000,1));
+        Employee employee = employeeRepository.save(new Employee(1, "joseph", 22, "male", 1000000));
         String updatedEmployeeAsJson = "{\n" +
                 "  \"name\": \"maria\",\n" +
                 "  \"age\": 19,\n" +
@@ -113,7 +119,7 @@ public class EmployeeIntegrationTest {
     @Test
     void should_delete_employee_when_delete_request_given_delete_employee_request() throws Exception {
         //given
-        Employee employee = employeeRepository.save(new Employee(1, "joseph", 22, "male", 1000000,1));
+        Employee employee = employeeRepository.save(new Employee(1, "joseph", 22, "male", 1000000));
 
         //when
         //then
@@ -128,9 +134,9 @@ public class EmployeeIntegrationTest {
     @Test
     void should_return_list_of_specific_employees_when_get_employees_given_get_request_for_specific_gender() throws Exception {
         //given
-        Employee maleEmployeeOne = new Employee(1, "joseph", 22, "male", 1000000,1);
-        Employee femaleEmployeeOne = new Employee(2, "maria", 19, "female", 200000 ,1);
-        Employee maleEmployeeTwo = new Employee(3, "jerick", 25, "male", 500 , 1);
+        Employee maleEmployeeOne = new Employee(1, "joseph", 22, "male", 1000000);
+        Employee femaleEmployeeOne = new Employee(2, "maria", 19, "female", 200000);
+        Employee maleEmployeeTwo = new Employee(3, "jerick", 25, "male", 500 );
         employeeRepository.save(maleEmployeeOne);
         employeeRepository.save(femaleEmployeeOne);
         employeeRepository.save(maleEmployeeTwo);
@@ -155,16 +161,16 @@ public class EmployeeIntegrationTest {
     @Test
     void should_return_page_1_and_2_for_employees_when_pagination_given_page_size_1_page_size_2() throws Exception {
         //given
-        Employee maleEmployeeOne = new Employee(1, "joseph", 22, "male", 1000000, 1);
-        Employee femaleEmployeeOne = new Employee(2, "maria", 19, "female", 200000,1);
-        Employee maleEmployeeTwo = new Employee(3, "jerick", 25, "male", 500 ,1);
+        Employee maleEmployeeOne = new Employee(1, "joseph", 22, "male", 1000000);
+        Employee femaleEmployeeOne = new Employee(2, "maria", 19, "female", 200000);
+        Employee maleEmployeeTwo = new Employee(3, "jerick", 25, "male", 500);
         employeeRepository.save(maleEmployeeOne);
         employeeRepository.save(femaleEmployeeOne);
         employeeRepository.save(maleEmployeeTwo);
 
         // when
         // then
-        mockMvc.perform(get("/employees?page=1&pageSize=5"))
+        mockMvc.perform(get("/employees?page=0&pageSize=2"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").isNumber())
                 .andExpect(jsonPath("$[0].name").value("joseph"))
@@ -176,6 +182,9 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$[1].age").value(19))
                 .andExpect(jsonPath("$[1].gender").value("female"))
                 .andExpect(jsonPath("$[1].salary").value(200000));
+
+        List<Employee> employees = employeeRepository.findAll();
+        Assertions.assertEquals(3, employees.size());
 
     }
 }

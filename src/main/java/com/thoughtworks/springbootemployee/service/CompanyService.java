@@ -41,7 +41,7 @@ public class CompanyService {
             editedCompany.setId(id);
             editedCompany.setCompanyName(company.getCompanyName());
             companyRepo.delete(company);
-            return companyRepo.save(editedCompany);
+            return companyRepo.save(editedCompany); //delete and save
         }
         return editedCompany;
     }
@@ -55,6 +55,6 @@ public class CompanyService {
     }
 
     public List<Company> getByPage(Integer page, Integer pageSize) {
-        return companyRepo.findAll(PageRequest.of(page,pageSize)).toList();
+        return companyRepo.findAll(PageRequest.of(page-1,pageSize)).toList();
     }
 }
