@@ -4,24 +4,22 @@ import com.thoughtworks.springbootemployee.Repository.CompanyRepo;
 //import com.thoughtworks.springbootemployee.Repository.RetiringCompanyRepo;
 import com.thoughtworks.springbootemployee.dto.CompanyResponse;
 import com.thoughtworks.springbootemployee.exception.CompanyNotFound;
-import com.thoughtworks.springbootemployee.exception.EmployeeNotFound;
 import com.thoughtworks.springbootemployee.mapper.CompanyMapper;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CompanyService {
 
-    @Autowired
     private CompanyRepo companyRepo;
 
-    @Autowired
     private CompanyMapper companyMapper;
+
     public CompanyService(CompanyRepo CompanyRepository) {
         this.companyRepo = CompanyRepository;
     }
@@ -34,20 +32,15 @@ public class CompanyService {
         return companyRepo.save(company);
     }
 
-    public CompanyResponse findById(Integer id) {
-        return companyRepo.findAll()
-                .stream()
-                .filter(company -> company.getId().equals(id))
-                .map(companyMapper::toResponse)
-                .findFirst()
-                .orElseThrow(() -> new CompanyNotFound("Employee Not Found"));
+    public Company findById(Integer id) {
+        return companyRepo.findById(id).orElseThrow(()->new CompanyNotFound("Company Not Found"));
     }
 
 
     public Company updateById(Integer id, Company updatedCompany) {
 
         Company company = companyRepo.findById(id)
-                .orElseThrow(() -> new CompanyNotFound("Employee Not Found"));
+                .orElseThrow(() -> new CompanyNotFound("Company Not Found"));
 
         validateCompany(updatedCompany.getCompanyName());
 
@@ -57,7 +50,7 @@ public class CompanyService {
 
     private void validateCompany(String companyName) {
         if (companyName == null) {
-            throw new CompanyNotFound("Employee Not Found");
+            throw new CompanyNotFound("Company Not Found");
         }
     }
     public void deleteById(Integer id) {

@@ -8,15 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/companies")
 public class CompanyController {
-
-    private static List<Company> companyList = new ArrayList<>();
-    private static List<Employee> employeeList = new ArrayList<>();
 
     @Autowired
     private CompanyService companyService;
@@ -31,7 +28,7 @@ public class CompanyController {
     }
 
     @GetMapping("/{companieId}")
-    public CompanyResponse getCompanyById(@PathVariable Integer companieId) {
+    public Company getCompanyById(@PathVariable Integer companieId) throws Exception{
         return companyService.findById(companieId);
     }
 

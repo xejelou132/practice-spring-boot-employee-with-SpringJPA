@@ -9,11 +9,6 @@ public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
     private String companyName;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "companyId")
     private List<Employee> employeeList;
@@ -45,5 +40,9 @@ public class Company {
 
     public void setEmployeesList(List<Employee> employeeList) {
         this.employeeList = employeeList;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

@@ -5,14 +5,11 @@ import com.thoughtworks.springbootemployee.model.Employee;
 import java.util.List;
 
 public class CompanyResponse {
-
     private Integer id;
     private String companyName;
-    private Integer employeeNumber;
     private List<Employee> employeeList;
 
     public CompanyResponse() {
-
     }
 
     public void setCompanyName(String companyName) {
@@ -23,10 +20,6 @@ public class CompanyResponse {
         this.id = id;
         this.companyName = companyName;
         this.employeeList = employeeList;
-    }
-
-    public void setEmployeeNumber(Integer employeeNumber) {
-        this.employeeNumber = employeeNumber;
     }
 
     public Integer getId() {
