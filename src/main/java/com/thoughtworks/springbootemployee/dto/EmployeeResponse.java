@@ -8,7 +8,7 @@ public class EmployeeResponse {
     private Integer companyId;
 
 
-    public EmployeeResponse(String name, Integer age, String gender, Integer salary) {
+    public EmployeeResponse(Integer id, String name, Integer age, String gender, Integer salary) {
         this.name = name;
         this.age = age;
         this.gender = gender;

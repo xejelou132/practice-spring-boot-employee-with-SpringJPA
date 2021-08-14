@@ -1,7 +1,9 @@
 package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.Repository.EmployeesRepo;
+import com.thoughtworks.springbootemployee.dto.EmployeeResponse;
 import com.thoughtworks.springbootemployee.exception.EmployeeNotFound;
+import com.thoughtworks.springbootemployee.mapper.EmployeeMapper;
 import com.thoughtworks.springbootemployee.model.Employee;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ public class EmployeeService{
     @Resource
     private EmployeesRepo employeesRepo;
 
+    @Resource
+    private EmployeeMapper employeesMapper;
+
     private EmployeeService(){
 
     }
@@ -29,40 +34,52 @@ public class EmployeeService{
         return employeesRepo.save(employee);
     }
 
-    public List<Employee> getEmployeesList(){
-        return employeesRepo.findAll();
-    }
-
-
-    public Employee findByID(Integer employeeId)
-    {
-        return employeesRepo.findById(employeeId).orElseThrow(() -> new EmployeeNotFound("Employee Not Found"));
-    }
-
-    public List<Employee> getByPage(int index, int page) {
-        return  employeesRepo.findAll(PageRequest.of(index-1,page)).toList();
-    }
-
-    public List<Employee> findByGender(String gender) {
-        return employeesRepo.findAll()
-                .stream()
-                .filter(employees1 -> employees1.getGender().equals(gender))
+    public List<EmployeeResponse> getEmployeesList(){
+        return employeesRepo.findAll().stream()
+                .map(employeesMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
-    public Employee updateById(Integer employeeId, Employee employee) {
-        Employee editedEmployee = this.findByID(employeeId);
-        if(employee != null){
-            editedEmployee.setAge(employee.getAge());
-            editedEmployee.setId(employeeId);
-            editedEmployee.setCompanyId(employee.getCompanyId());
-            editedEmployee.setName(employee.getName());
-            editedEmployee.setSalary(employee.getSalary());
-            editedEmployee.setGender(employee.getGender());
-            employeesRepo.delete(employee);
-            return employeesRepo.save(editedEmployee);
+    public EmployeeResponse findByID(Integer employeeId) {
+        return employeesRepo.findAll().stream()
+                .filter(employee -> employee.getId().equals(employeeId))
+                .map(employeesMapper::toResponse)
+                .findFirst()
+                .orElseThrow(() -> new EmployeeNotFound("Employee Not Found"));
+    }
+
+    public List<EmployeeResponse> getByPage(int index, int page) {
+        return  employeesRepo.findAll(PageRequest.of(index-1,page)).stream()
+                .map(employeesMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<EmployeeResponse> findByGender(String gender) {
+        return employeesRepo.findAll().stream()
+                .filter(employees1 -> employees1.getGender().equals(gender))
+                .map(employeesMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public Employee updateById(Integer employeeId, Employee employeeUpdate) {
+
+        Employee employee = employeesRepo.findById(employeeId)
+                .orElseThrow(() -> new EmployeeNotFound("Employee Not Found"));
+
+        validateEmployeeName(employeeUpdate.getName());
+
+        employee.setName(employeeUpdate.getName());
+        employee.setAge(employeeUpdate.getAge());
+        employee.setGender(employeeUpdate.getGender());
+        employee.setSalary(employeeUpdate.getSalary());
+
+        return employeesRepo.save(employee);
+    }
+
+    private void validateEmployeeName(String employeeName) {
+        if (employeeName == null) {
+            throw new EmployeeNotFound("Employee Not Found");
         }
-        return editedEmployee;
     }
 
     public void deleteById(Integer employeeId) {
